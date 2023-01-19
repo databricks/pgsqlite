@@ -75,8 +75,9 @@ class PGSqlite(object):
         cols = {}
         already_created_pks = [] 
         for col in sqlglot.parse_one(table.schema, read="sqlite").find_all(sqlglot.exp.ColumnDef):
+            # breakpoint()
             # Quote the column name for consistency with later index and foreign key references
-            col.this.set("quoted", True)
+            # col.this.set("quoted", True)
             # Fix for two issues in sqlglot
             col_sql_str = col.sql(dialect="postgres").replace("DATETIME", "TIMESTAMP")
             if "SERIAL" in col_sql_str:
@@ -130,16 +131,19 @@ class PGSqlite(object):
 
 
     def get_fk_sql(self, table: Table) -> SQL:
-        sql = []
-        # create the foreign keys after the tables to avoid having to figure out the dep graph
-        for fk in table.foreign_keys:
-            fk_name = "FK_" + fk.other_column
-            fk_sql = SQL("ALTER TABLE {table_name} ADD CONSTRAINT {key_name}  FOREIGN KEY ({column}) REFERENCES {other_table} ({other_column})").format(table_name=Identifier(table.name),
-                column=Identifier(fk.column), key_name=Identifier(fk_name), other_table=Identifier(fk.other_table), other_column=Identifier(fk.other_column))
-            sql.append(fk_sql)
+        constraints = (sqlglot.parse_one(table.schema, read="sqlite")
+                              .find_all(sqlglot.exp.Constraint))
+        sql = [
+            SQL("ALTER TABLE {table_name} ADD {fk}").format(
+                table_name=Identifier(table.name),
+                fk=SQL(c.sql(dialect='postgres')),
+            )
+            for c in constraints
+            if c.find(sqlglot.exp.ForeignKey)    
+        ]
         self.summary["tables"]["fks"][table.name] = {
             "status": "PREPARED",
-            "count": len(table.foreign_keys),
+            "count": len(sql),
         }
         return sql
 
