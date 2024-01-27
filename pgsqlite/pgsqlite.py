@@ -181,6 +181,8 @@ class PGSqlite(object):
         self.max_import_concurrency = max_import_concurrency
         db = Database(self.sqlite_filename)
         self._tables = {t.name: ParsedTable(t) for t in db.tables}
+        if sys.platform == "win32":
+            asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
     @property
     def tables(self):
