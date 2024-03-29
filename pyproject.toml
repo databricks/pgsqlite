@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pgsqlite"
+version = "1.0.3"
+description = "Loader to import sqlite3 databases into Postgres"
+
+readme = "README.md"
+authors = [
+    { name = "bit.io", email = "python@bit.io" }
+]
+
+requires-python = ">=3.9"
+dependencies = [
+    "sqlite-utils >= 3.28",
+    "psycopg >= 3.1",
+    "psycopg-binary >= 3.1",
+    "structlog >= 22.1.0",
+    "sqlglot >= 10.6.3"
+]
+
+keywords = ["bit.io", "Database", "postgres", "postgresql", "sqlite", "sqlite3"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/bitdotioinc/pgsqlite"
+"Bug Tracker" = "https://github.com/bitdotioinc/pgsqlite/issues"
+
+[project.scripts]
+pgsqlite = "pgsqlite.pgsqlite:main"
+
+[tool.setuptools.packages.find]
+exclude = ["test", "tests"]

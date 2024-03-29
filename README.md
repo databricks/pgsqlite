@@ -2,6 +2,12 @@ pgsqlite
 =======
 Load SQLite3 databases into PostgreSQL.
 
+Install with pipx
+
+```sh
+pipx install pgsqlite
+```
+
 Usage:
 ```
 usage: pgsqlite.py [-h] -f SQLITE_FILENAME -p POSTGRES_CONNECT_URL [-d DEBUG] [--drop_tables DROP_TABLES] [--drop_everything DROP_EVERYTHING] [--drop_tables_after_import DROP_TABLES_AFTER_IMPORT]

@@ -517,7 +517,7 @@ class PGSqlite(object):
                 # todo: add checks, views, triggers.
 
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "-f",
@@ -587,3 +587,6 @@ if __name__ == "__main__":
 
     if args.drop_tables_after_import:
         loader._drop_tables()
+
+if __name__ == "__main__":
+    main()
