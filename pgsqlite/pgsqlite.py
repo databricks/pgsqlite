@@ -146,12 +146,12 @@ class PGSqlite(object):
         return await asyncio.gather(*(sem_task(coro) for coro in coros))
 
     def boolean_transformer(self, val: Any, nullable: bool) -> Union[bool, None]:
-        if nullable and not val:
+        if nullable and val is None:
             return None
-        if not nullable and not val:
+        if not nullable and val is None:
             raise Exception("Value is None but column is not nullable")
 
-        if val == 1 or val.lower() == "true":
+        if val == 1 or str(val).lower() == "true":
             return "TRUE"
         return "FALSE"
 
