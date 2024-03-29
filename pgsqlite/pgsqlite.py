@@ -542,32 +542,27 @@ if __name__ == "__main__":
     parser.add_argument(
         "-d",
         "--debug",
-        type=bool,
-        default=False,
+        action='store_true',
         help="Set log level to DEBUG",
     )
     parser.add_argument(
         "--show_sample_data",
-        type=bool,
-        default=False,
+        action='store_true',
         help="After import, show up to 10 rows of the imported data in each table.",
     )
     parser.add_argument(
         "--drop_tables",
-        type=bool,
-        default=False,
+        action='store_true',
         help="Prior to import, drop tables in the target database that have the same name as tables in the source database",
     )
     parser.add_argument(
         "--drop_everything",
-        type=bool,
-        default=False,
+        action='store_true',
         help="Prior to import, drop everything (tables, views, triggers, etc, etc) in the target database before the import",
     )
     parser.add_argument(
         "--drop_tables_after_import",
-        type=bool,
-        default=False,
+        action='store_true',
         help="Drop all tables in the target database after import; useful for testing",
     )
     args = parser.parse_args()
